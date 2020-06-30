@@ -20,6 +20,15 @@ class Message {
   final String content;
 
   Message(this.author, this.content);
+
+  static bool sanityCheck(Map<dynamic, dynamic> json) {
+    return json.containsKey("name") && json.containsKey("text");
+  }
+
+  factory Message.fromJson(Map<dynamic, dynamic> json) {
+    return Message(json["name"], json["text"]);
+  }
+
 }
 
 @immutable
@@ -27,6 +36,14 @@ class SystemMessage {
   final String content;
 
   SystemMessage(this.content);
+
+  static bool sanityCheck(Map<dynamic, dynamic> json) {
+    return json.containsKey("text");
+  }
+
+  factory SystemMessage.fromJson(Map<dynamic, dynamic> json) {
+    return SystemMessage(json["text"]);
+  }
 }
 
 typedef OnSend(String content);
