@@ -28,7 +28,6 @@ class Message {
   factory Message.fromJson(Map<dynamic, dynamic> json) {
     return Message(json["name"], json["text"]);
   }
-
 }
 
 @immutable
@@ -57,43 +56,82 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _render(_messages, _controller, _onSend);
+    return _render(context, _messages, _controller, _onSend);
   }
 
-  Widget _render(List<Either<Message, SystemMessage>> messages,
-      TextEditingController controller, OnSend onSend) {
+  Widget _render(
+      BuildContext context,
+      List<Either<Message, SystemMessage>> messages,
+      TextEditingController controller,
+      OnSend onSend) {
     return Column(
       children: [
-        Expanded(child: _renderChat(messages)),
-        Row(
-          children: [
-            Expanded(
-                child: TextField(
-              controller: controller,
+        Expanded(child: _renderChat(context, messages)),
+        Card(
+            elevation: 8.0,
+            shape: Border(),
+            margin: EdgeInsets.zero,
+            child: Row(
+              children: [
+                Expanded(
+                    child: Padding(
+                        padding: EdgeInsets.only(left: 8.0, bottom: 8.0),
+                        child: TextField(
+                          controller: controller,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w400),
+                        ))),
+                Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: IconButton(
+                      icon: Icon(Icons.send,
+                          color: Theme.of(context).accentColor),
+                      onPressed: () => onSend(controller.text),
+                    )),
+              ],
             )),
-            FlatButton(
-              child: Text("Send"),
-              onPressed: () => onSend(controller.text),
-            ),
-          ],
-        )
       ],
     );
   }
 
-  ListView _renderChat(List<Either<Message, SystemMessage>> messages) {
-    return ListView.builder(
-      itemBuilder: (ctx, inx) =>
-          messages[inx].fold(_renderMessage, _renderSystemMessage),
-      itemCount: messages.length,
-    );
+  Widget _renderChat(
+      BuildContext context, List<Either<Message, SystemMessage>> messages) {
+    return Container(
+        color: Theme.of(context).primaryColor,
+        child: ListView.builder(
+          itemBuilder: (ctx, inx) =>
+              messages[inx].fold(_renderMessage, _renderSystemMessage),
+          itemCount: messages.length,
+        ));
   }
 
   Widget _renderMessage(Message message) {
-    return Text(message.author + ": " + message.content);
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+                text: message.author + ": ",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            TextSpan(
+                text: message.content,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300))
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _renderSystemMessage(SystemMessage message) {
-    return Text(message.content);
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Center(
+        widthFactor: null,
+        heightFactor: 1.0,
+        child: Text(message.content,
+            style: TextStyle(color: Colors.white54, fontStyle: FontStyle.italic)),
+      ),
+    );
   }
 }
