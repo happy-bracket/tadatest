@@ -47,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _send(String content) {
+    chatChannel.sink.add(jsonEncode({"text": content}));
     setState(() {
       _screen.apply((l) => {l.controller.text = ""}, (r) => {});
     });
