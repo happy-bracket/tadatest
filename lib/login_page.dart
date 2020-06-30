@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 typedef LoginCallback(String login);
@@ -23,17 +22,25 @@ class LoginPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextField(
-            controller: _controller,
-            enableSuggestions: false,
-            textAlign: TextAlign.center,
-            decoration: InputDecoration(
-              hintText: "your chat name...",
-            ),
-          ),
+          Row(children: [
+            Spacer(flex: 2),
+            Expanded(
+                flex: 5,
+                child: TextField(
+                  controller: _controller,
+                  enableSuggestions: false,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+                  decoration: InputDecoration(
+                    hintText: "Your chat name...",
+                  ),
+                )),
+            Spacer(flex: 2)
+          ]),
           FlatButton(
             onPressed: () => _loginCallback(_controller.text),
-            child: Text("Log in"),
+            color: Theme.of(context).accentColor,
+            child: Text("LOG IN"),
           )
         ],
       ),

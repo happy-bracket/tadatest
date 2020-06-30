@@ -42,8 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: _screen.fold((l) => AppBar(title: Text("The Chat")), (r) => null),
       body: _screen.fold(
-              (model) => ChatPage(_send, model.controller, model.messages),
-              (model) => LoginPage(_loginToChat, model.controller)),
+          (model) => ChatPage(_send, model.controller, model.messages),
+          (model) => LoginPage(_loginToChat, model.controller)),
     );
   }
 
@@ -65,29 +65,28 @@ class _MyHomePageState extends State<MyHomePage> {
       if (result.containsKey("name") && Message.sanityCheck(result)) {
         setState(() {
           _screen.apply(
-                  (l) => l.addMessages([Either.left(Message.fromJson(result))]),
-                  (r) => {});
+              (l) => l.addMessages([Either.left(Message.fromJson(result))]),
+              (r) => {});
         });
       } else {
         if (SystemMessage.sanityCheck(result)) {
           setState(() {
             _screen.apply(
-                    (l) =>
-                    l.addMessages(
-                        [Either.right(SystemMessage.fromJson(result))]),
-                    (r) => {});
+                (l) => l.addMessages(
+                    [Either.right(SystemMessage.fromJson(result))]),
+                (r) => {});
           });
         }
       }
-    }, onDone: () =>
-    {
-      setState(() {
-        _screen.apply((l) =>
-            l.addMessages(
-                [Either.right(SystemMessage("You were disconnected"))]), (
-            r) => null)
-      })
-    });
+    },
+        onDone: () => {
+              setState(() {
+                _screen.apply(
+                    (l) => l.addMessages(
+                        [Either.right(SystemMessage("You were disconnected"))]),
+                    (r) => null);
+              })
+            });
 
     setState(() {
       _screen = Either.left(ChatModel());
