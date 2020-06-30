@@ -36,7 +36,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screen.fold((model) => ChatPage(_send, model.controller, []), (model) => LoginPage(_loginToChat, model.controller)),
+      appBar: _screen.fold((l) => AppBar(title: Text("The Chat")), (r) => null),
+      body: _screen.fold((model) => ChatPage(_send, model.controller, model.messages), (model) => LoginPage(_loginToChat, model.controller)),
     );
   }
 
@@ -45,7 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _loginToChat(String login) {
-
+    setState(() {
+      _screen = Either.left(ChatModel());
+    });
   }
 
 }

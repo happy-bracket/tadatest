@@ -5,6 +5,10 @@ typedef LoginCallback(String login);
 
 class LoginModel {
   final TextEditingController controller = TextEditingController();
+
+  kill() {
+    controller.dispose();
+  }
 }
 
 class LoginPage extends StatelessWidget {

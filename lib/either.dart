@@ -21,4 +21,8 @@ class Either<L, R> {
     }
   }
 
+  apply(ifLeft(L l), ifRight(R r)) {
+    fold(ifLeft, ifRight);
+  }
+
 }
