@@ -3,93 +3,11 @@ import 'package:flutter/material.dart';
 import 'either.dart';
 
 class ChatModel {
-  final List<Either<Message, SystemMessage>> _messages = [
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.right(SystemMessage("mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-    Either.left(Message("hehmda", "mdaheh")),
-  ];
+  final List<Either<Message, SystemMessage>> _messages = [];
   final TextEditingController controller = TextEditingController();
 
-  List<Either<Message, SystemMessage>> get messages => List.unmodifiable(_messages);
+  List<Either<Message, SystemMessage>> get messages =>
+      List.unmodifiable(_messages);
 
   addMessages(List<Either<Message, SystemMessage>> newMessages) {
     _messages.addAll(newMessages);
@@ -127,8 +45,27 @@ class ChatPage extends StatelessWidget {
 
   Widget _render(List<Either<Message, SystemMessage>> messages,
       TextEditingController controller, OnSend onSend) {
+    return Column(
+      children: [
+        Expanded(child: _renderChat(messages)),
+        Row(
+          children: [
+            Expanded(
+                child: TextField(
+              controller: controller,
+            )),
+            FlatButton(
+              child: Text("Send"),
+              onPressed: () => onSend(controller.text),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  ListView _renderChat(List<Either<Message, SystemMessage>> messages) {
     return ListView.builder(
-      shrinkWrap: true,
       itemBuilder: (ctx, inx) =>
           messages[inx].fold(_renderMessage, _renderSystemMessage),
       itemCount: messages.length,

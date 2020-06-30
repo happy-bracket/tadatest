@@ -42,7 +42,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _send(String content) {
-
+    setState(() {
+      _screen.apply((l) => {
+        l.controller.text = ""
+      }, (r) => {});
+    });
   }
 
   _loginToChat(String login) {
