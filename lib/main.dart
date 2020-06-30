@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tadatest/chat_page.dart';
 import 'package:tadatest/login_page.dart';
+
+import 'either.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,9 +31,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  Either<ChatModel, LoginModel> _screen = Either.right(LoginModel());
+
   @override
   Widget build(BuildContext context) {
-    return LoginPage(_loginToChat);
+    return Scaffold(
+      body: _screen.fold((model) => ChatPage(_send, model.controller, []), (model) => LoginPage(_loginToChat, model.controller)),
+    );
+  }
+
+  _send(String content) {
+
   }
 
   _loginToChat(String login) {

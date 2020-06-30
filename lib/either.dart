@@ -13,7 +13,7 @@ class Either<L, R> {
     _isLeft = false;
   }
 
-  C fold<C>(C ifLeft(L), C ifRight(R)) {
+  C fold<C>(C ifLeft(L l), C ifRight(R r)) {
     if (_isLeft) {
       return ifLeft(_left);
     } else {

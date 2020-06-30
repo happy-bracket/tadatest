@@ -1,15 +1,17 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-typedef LoginCallback(string);
+typedef LoginCallback(String login);
+
+class LoginModel {
+  final TextEditingController controller = TextEditingController();
+}
 
 class LoginPage extends StatelessWidget {
-
   final LoginCallback _loginCallback;
-  final TextEditingController controller = TextEditingController();
+  final TextEditingController _controller;
 
-  LoginPage(this._loginCallback);
+  LoginPage(this._loginCallback, this._controller);
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +20,19 @@ class LoginPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextField(
-            controller: controller,
+            controller: _controller,
             enableSuggestions: false,
             textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              hintText: "your chat name...",
+            ),
           ),
           FlatButton(
-            onPressed: () => _loginCallback(controller.text),
-            child: Text("Войти"),
+            onPressed: () => _loginCallback(_controller.text),
+            child: Text("Log in"),
           )
         ],
       ),
     );
   }
-
-
-
 }
