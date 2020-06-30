@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: _screen.fold((l) => AppBar(title: Text("The Chat")), (r) => null),
       body: _screen.fold(
           (model) => ChatPage(_send, model.controller, model.messages),
-          (model) => LoginPage(_loginToChat, model.controller)),
+          (model) => LoginPage(_loginToChat, model.controller, model.emptyError)),
     );
   }
 
@@ -55,6 +55,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _loginToChat(String login) {
+    if (login.isEmpty) {
+      setState(() {
+        _screen.apply((l) => null, (r) => r.emptyError = true);
+      });
+      return;
+    }
+
     chatChannel =
         IOWebSocketChannel.connect("ws://pm.tada.team/ws?name=$login");
     chatChannel.stream.listen((event) {

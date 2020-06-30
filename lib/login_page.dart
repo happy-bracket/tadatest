@@ -4,6 +4,7 @@ typedef LoginCallback(String login);
 
 class LoginModel {
   final TextEditingController controller = TextEditingController();
+  bool emptyError = false;
 
   kill() {
     controller.dispose();
@@ -13,8 +14,9 @@ class LoginModel {
 class LoginPage extends StatelessWidget {
   final LoginCallback _loginCallback;
   final TextEditingController _controller;
+  final bool _emptyError;
 
-  LoginPage(this._loginCallback, this._controller);
+  LoginPage(this._loginCallback, this._controller, this._emptyError);
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class LoginPage extends StatelessWidget {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
                   decoration: InputDecoration(
                     hintText: "Your chat name...",
+                    errorText: _emptyError ? "Name cannot be empty" : null,
                   ),
                 )),
             Spacer(flex: 2)
